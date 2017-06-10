@@ -12,7 +12,7 @@ classdef RlController < handle
     
     properties
         % screen width, screen height, 2 action
-        q_table = randn(288, 512, 2);
+        q_table = zeros(288, 512, 2);
         cur_iter = 0;
         supervisor
     end
