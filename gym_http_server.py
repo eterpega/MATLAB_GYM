@@ -8,13 +8,13 @@ import uuid
 import gym
 from gym.wrappers import Monitor
 import gym_ple
+import scipy.io
 
 import numpy as np
 import six
 import argparse
 import sys
 import json
-
 
 import logging
 logger = logging.getLogger('werkzeug')
@@ -77,8 +77,11 @@ class Envs(object):
             nice_action = np.array(action)
         if render:
             env.render(mode='human', close=False) #mode='rgb_array', close=False)
-        [_, reward, done, info] = env.step(nice_action)
-        # get game state directly, for testing
+        [obs_img, reward, done, info] = env.step(nice_action)
+        # use scipy for image communication to avoid overhead in jsonable
+        scipy.io.savemat('./tmp.mat', mdict={'obs_img': obs_img})
+
+        # get game state directly
         observation = env.env.env.game.getGameState()
         vec = [observation['next_next_pipe_bottom_y'], \
                observation['next_next_pipe_dist_to_player'], \

@@ -47,6 +47,11 @@ classdef FlappyBirdGym < handle
                 end
                 [ob, reward, done, info] = this.client.env_step(this.instance_id,...
                     action, this.IS_RENDER);
+                
+                % in case the image is needed for Q-learning
+                %tmp_data = load('tmp.mat');
+                %ob_img = tmp_data.obs_img;
+                
                 this.TotalReward = this.TotalReward + reward;
                 if(done)
                     fprintf('Game over, Total Reward: %d \n', this.TotalReward);
