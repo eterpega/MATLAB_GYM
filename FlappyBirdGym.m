@@ -5,7 +5,7 @@ classdef FlappyBirdGym < handle
         OUTDIR = '/tmp/random-matlab-agent-results';
         IS_RENDER = true;
         MAX_STEPS = 500;
-        MAX_EPISODE = 1000;
+        MAX_EPISODE = 50000;
     end
     
     properties

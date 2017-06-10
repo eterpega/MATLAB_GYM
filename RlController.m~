@@ -75,7 +75,7 @@ classdef RlController < handle
                     this.cur_iter =  this.cur_iter + 1;
                 end
                 if(mod(this.cur_iter,1000)==0)
-                    this.save_model();
+                    this.save_model
                 end
 %                 if(reward~=0)
 %                     disp(reward);
