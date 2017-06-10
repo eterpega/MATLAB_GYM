@@ -6,7 +6,6 @@ classdef FlappyBirdGym < handle
         IS_RENDER = true;
         MAX_STEPS = 500;
         MAX_EPISODE = 1000;
-        MAX_TRAIN_RECORD = 100000;
     end
     
     properties
@@ -19,11 +18,11 @@ classdef FlappyBirdGym < handle
     methods
         function [this]= FlappyBirdGym()
             % To Do: Investigate running python script from Matlab
-%             commandStr = 'python gym_http_server.py';
-%             [status, commandOut] = system(commandStr);
-%             if status==0
-%                 fprintf('squared result is %d\n',str2num(commandOut));
-%             end
+            %             commandStr = 'python gym_http_server.py';
+            %             [status, commandOut] = system(commandStr);
+            %             if status==0
+            %                 fprintf('squared result is %d\n',str2num(commandOut));
+            %             end
         end
         
         function [] = initialize(this)
@@ -63,15 +62,19 @@ classdef FlappyBirdGym < handle
         function [] = train_controller(this, Controller)
             fprintf('Training controller \n');
             i = 1;
-            while(i < this.MAX_TRAIN_RECORD)
+            while(i < this.MAX_EPISODE)
                 j = 1;
                 obs = this.client.env_reset(this.instance_id);
                 prev_ob = nan;
                 while(j < this.MAX_STEPS)
-                    action = Controller.sample_action(prev_ob);
+                    if(~isnan(prev_ob))
+                        action = Controller.sample_action(prev_ob);
+                    else
+                        action = 1;
+                    end
                     [ob, reward, done, ~] = this.client.env_step(this.instance_id,...
                         action, this.IS_RENDER);
-                    train(Controller, prev_ob, reward, ob, done);
+                    train(Controller, action, prev_ob, reward, ob, done);
                     prev_ob = ob;
                     if(done)
                         break;

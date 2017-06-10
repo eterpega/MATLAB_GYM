@@ -1,5 +1,6 @@
 classdef SimpleController < handle
-    properties
+    properties (Constant)
+        HALF_HEIGHT = 512/2;
     end
     
     methods
@@ -8,7 +9,7 @@ classdef SimpleController < handle
         
         function [action] = get_action(this, obs)
             % TO DO: Based on state space, design bang-bang controller
-            % action=1, going up; action=0, going down
+            % action=1, going down; action=0, going up
             %  observation ordering
             %   [next_next_pipe_bottom_y, \
             %    next_next_pipe_dist_to_player, \
