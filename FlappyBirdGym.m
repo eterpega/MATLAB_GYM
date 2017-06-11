@@ -4,7 +4,7 @@ classdef FlappyBirdGym < handle
         GAME = 'FlappyBird-v0';
         OUTDIR = '/tmp/random-matlab-agent-results';
         IS_RENDER = true;
-        MAX_STEPS = 500;
+        MAX_STEPS = 6000;
         MAX_EPISODE = 50000;
     end
     
@@ -42,7 +42,7 @@ classdef FlappyBirdGym < handle
                 if(~isnan(ob))
                     action = Controller.get_action(ob);
                 else
-                    action = 1;
+                    action = Controller.get_action(obs);
                 end
                 [ob, reward, done, info] = this.client.env_step(this.instance_id,...
                     action, this.IS_RENDER);
@@ -56,6 +56,7 @@ classdef FlappyBirdGym < handle
                     fprintf('Game over, Total Reward: %d \n', this.TotalReward);
                     break;
                 end
+                j = j + 1;
             end
         end
         
@@ -70,15 +71,19 @@ classdef FlappyBirdGym < handle
                     if(~isnan(prev_ob))
                         action = Controller.sample_action(prev_ob);
                     else
-                        action = 1;
+                        action = Controller.sample_action(obs);
                     end
                     [ob, reward, done, ~] = this.client.env_step(this.instance_id,...
                         action, this.IS_RENDER);
                     train(Controller, action, prev_ob, reward, ob, done);
                     prev_ob = ob;
+                    this.TotalReward = this.TotalReward + reward;
                     if(done)
+                        fprintf('Game over, Total Reward: %d \n', this.TotalReward);
+                        fprintf('Number of steps: %d \n', j);
                         break;
                     end
+                    j = j + 1;
                 end
             end
         end

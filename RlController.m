@@ -4,10 +4,11 @@ classdef RlController < handle
         MODEL_TYPE = 'rl';
         ALPHA = 0.7;    % Learning Rate
         GAMMA = 1;    % Discount Factor
-        EPSILON = 0.1; % Exploration Rate
+        EPSILON = 0.01; % Exploration Rate
         WIDTH = 288;
         HEIGHT = 512;
-        SUPERVISE_ITER = 500;
+        SUPERVISE_ITER = 8;
+        MAX_VELO = 50;
     end
     
     properties
@@ -44,19 +45,13 @@ classdef RlController < handle
         function [action] = sample_action(this, obs)
             rnum = rand();
             
-            if(this.cur_iter>this.SUPERVISE_ITER)
+            if(~mod(this.cur_iter,this.SUPERVISE_ITER)==0)
                 % exponential decaying exploration
                 epsilon = this.EPSILON * exp(-(this.cur_iter-this.SUPERVISE_ITER)/200);
                 if(rnum>epsilon)
                     action = this.get_action(obs);
                 else
-
-                    if(rnum>epsilon/2)
-                        action = (rnum>0.5);
-                    else
-                        % use supervisor to guide training
-                        action = this.supervisor.get_action(obs);
-                    end
+                    action = (rnum>0.5);
                 end
             else
                 action = this.supervisor.get_action(obs);
@@ -69,17 +64,20 @@ classdef RlController < handle
                 alpha = this.ALPHA * exp(-this.cur_iter/50);
                 [dx_p, dy_p] = this.get_state(prev_ob);
                 [dx, dy] = this.get_state(ob);
-                this.q_table(dx_p, dy_p, action+1) = (1-alpha)*this.q_table(dx_p, dy_p, action+1) + ...
-                    alpha * (reward + this.GAMMA*max(this.q_table(dx,dy,:)));
+                
                 if(done==1)
                     this.cur_iter =  this.cur_iter + 1;
+                    this.q_table(dx_p, dy_p, action+1) = reward;
+                else
+                    this.q_table(dx_p, dy_p, action+1) = (1-alpha)*this.q_table(dx_p, dy_p, action+1) + ...
+                        alpha * (reward + this.GAMMA*max(this.q_table(dx,dy,:)));
                 end
                 if(mod(this.cur_iter,1000)==0)
                     this.save_model();
                 end
-%                 if(reward~=0)
-%                     disp(reward);
-%                 end
+                %                 if(reward~=0)
+                %                     disp(reward);
+                %                 end
             end
         end
         
@@ -101,6 +99,8 @@ classdef RlController < handle
             y = obs(8);
             dx = obs(5);
             dy = this.HEIGHT/2 - (y-yc1);
+            dy = max(round(dy), 1);
+            dx = max(round(dx), 1);
         end
     end
 end

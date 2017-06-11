@@ -23,8 +23,14 @@ classdef SimpleController < handle
             % define a bang-bang controller
             yc1 = (obs(4) + obs(6))/2;
             yc2 = (obs(1) + obs(3))/2;
+            dx = obs(5);
             y = obs(8);
-            action = (y-yc1)<0;
+            velo = obs(7);
+            if(dx<=3)
+                action = (y-yc2+10-velo)<0;
+            else
+                action = (y-yc1+10-velo)<0;
+            end
         end
         
         function [action] = sample_action(this, obs)
