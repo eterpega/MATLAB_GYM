@@ -5,7 +5,7 @@ classdef FlappyBirdGym < handle
         OUTDIR = '/tmp/random-matlab-agent-results';
         IS_RENDER = true;
         MAX_STEPS = 6000;
-        MAX_EPISODE = 50000;
+        MAX_EPISODE = 100000;
     end
     
     properties
@@ -66,6 +66,7 @@ classdef FlappyBirdGym < handle
             while(i < this.MAX_EPISODE)
                 j = 1;
                 obs = this.client.env_reset(this.instance_id);
+                this.TotalReward = 0;
                 prev_ob = nan;
                 while(j < this.MAX_STEPS)
                     if(~isnan(prev_ob))
@@ -79,7 +80,7 @@ classdef FlappyBirdGym < handle
                     prev_ob = ob;
                     this.TotalReward = this.TotalReward + reward;
                     if(done)
-                        fprintf('Game over, Total Reward: %d \n', this.TotalReward);
+                        fprintf('Game over, Total Reward: %f \n', this.TotalReward);
                         fprintf('Number of steps: %d \n', j);
                         break;
                     end

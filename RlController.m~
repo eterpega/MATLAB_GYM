@@ -7,7 +7,7 @@ classdef RlController < handle
         EPSILON = 0.3; % Exploration Rate
         WIDTH = 288;
         HEIGHT = 512;
-        SUPERVISE_ITER = 4;
+        SUPERVISE_ITER = 6;
         BATCH_SIZE = 32;
         MAX_VELO = 50;
         MAX_MEMORY = 100000;
@@ -62,8 +62,7 @@ classdef RlController < handle
         function [action] = sample_action(this, obs)
             rnum = rand();
             
-            if(~mod(this.cur_iter,this.SUPERVISE_ITER)==0)
-                disp('Free Mode');
+            if(mod(this.cur_iter,this.SUPERVISE_ITER)==0)
                 % exponential decaying exploration
                 epsilon = this.EPSILON * exp(-(this.cur_iter-this.SUPERVISE_ITER)/200);
                 if(rnum>epsilon)
@@ -72,7 +71,6 @@ classdef RlController < handle
                     action = (rnum>0.5);
                 end
             else
-                disp('Supervisor Mode');
                 action = this.supervisor.get_action(obs);
             end
         end
@@ -89,7 +87,7 @@ classdef RlController < handle
                 
                 % experience replay
                 if(this.idx_pt > 3*this.BATCH_SIZE)
-                    tmp_idx = randi(this.idx_pt-1, this.BATCH_SIZE, 1);
+                    tmp_idx = randi(this.idx_pt, this.BATCH_SIZE, 1);
                     parfor s = 1:this.BATCH_SIZE
                         experience_replay(this,tmp_idx(s),alpha);
                     end
@@ -138,13 +136,8 @@ classdef RlController < handle
         end
         
         function [] = experience_replay(this, idx, alpha)
-            tmp = this.replay_memory(idx,:);
-            dx_p = tmp(1);
-            dy_p = tmp(2);
-            dx = tmp(3);
-            dy = tmp(4);
-            action = tmp(5);
-            reward = tmp(6);
+            tmp_memory = 
+            [dx_p, dy_p, dx, dy, action, reward] = this.replay_memory(idx,:);
             this.q_table(dx_p, dy_p, action+1) = (1-alpha)*this.q_table(dx_p, dy_p, action+1) + ...
                 alpha * (reward + this.GAMMA*max(this.q_table(dx,dy,:)));
         end
