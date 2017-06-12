@@ -397,7 +397,7 @@ class FlappyBird(base.PyGameWrapper):
             hit = pygame.sprite.spritecollide(
                 self.player, self.pipe_group, False)
             for h in hit:
-                is_in_pipe = ((p.x - p.width / 2) <= self.player.pos_x < (p.x - p.width / 2))
+                is_in_pipe = ((h.x - h.width / 2) <= self.player.pos_x < (h.x - h.width / 2))
                 # do check to see if its within the gap.
                 top_pipe_check = (
                     (self.player.pos_y - self.player.height / 2) <= h.gap_start) and is_in_pipe

@@ -4,14 +4,14 @@ classdef RlController < handle
         MODEL_TYPE = 'rl';
         ALPHA = 0.7;                % Learning Rate
         GAMMA = 1;                  % Discount Factor
-        EPSILON = 0.04;         	% Exploration Rate
+        EPSILON = 0.07;         	% Exploration Rate
         WIDTH = 288;                % Screen Width
         HEIGHT = 512;               % Screen Height
-        SUPERVISE_ITER = 4;         % Every 4 iteration, Run Supervisor Mode
-        BATCH_SIZE = 64;            % Training Batch Size
+        SUPERVISE_ITER = 50;        % Every 50 iteration, Run Supervisor Mode
+        BATCH_SIZE = 32;            % Training Batch Size
         MAX_VELO = 50;              % Not used at this moment
         MAX_MEMORY = 100000;        % Maximum Replay Memory
-        MAX_SUPERVISE_ITER = 200;   % After X iterations, no supervisors
+        MAX_SUPERVISE_ITER = 1;     % After X iterations, no supervisors
     end
     
     properties
@@ -22,7 +22,7 @@ classdef RlController < handle
     
     properties
         % screen width, screen height, 2 action
-        q_table = zeros(288, 512*2, 2);
+        q_table
         cur_iter = 0;
         supervisor
     end
@@ -30,6 +30,7 @@ classdef RlController < handle
     methods
         function [this] = RlController()
             this.supervisor = SimpleController();
+            this.q_table = zeros(this.WIDTH, this.HEIGHT*2, 2);
         end
         
         function [action] = get_action(this, obs)
@@ -72,6 +73,7 @@ classdef RlController < handle
                     action = this.supervisor.get_action(obs);
                 end
             else
+                % exploration + exploitation
                 if(rnum>epsilon)
                     action = this.get_action(obs);
                 else
@@ -101,9 +103,6 @@ classdef RlController < handle
                         alpha * (reward + this.GAMMA*max(this.q_table(dx,dy,:)));
                 end
                 
-                if(mod(this.cur_iter,25)==0)
-                    this.save_model();
-                end
             end
         end
         
@@ -123,11 +122,11 @@ classdef RlController < handle
         function [dx, dy] = get_state(this, obs)
             yc1 = (obs(4) + obs(6))/2;
             y = obs(8);
-            dx = obs(5);
+            dx = round(obs(5));
             velo = obs(7);
-            dy = this.HEIGHT/2 - (y-yc1+10-velo);
-            dy = max(round(dy), 1);
-            dx = max(round(dx), 1);
+            dy = round(this.HEIGHT/2 - (y-yc1-velo));
+            dy = max(dy, 1);
+            dx = max(dx, 1);
         end
         
         function [] = add_to_memory(this, dx_p, dy_p, dx, dy, action, reward, done)
@@ -148,13 +147,13 @@ classdef RlController < handle
             dy = tmp(4);
             action = tmp(5);
             reward = tmp(6);
-            done = tmp(7);
-            if(done)
-                this.q_table(dx_p, dy_p, action+1) = reward;
-            else
-                this.q_table(dx_p, dy_p, action+1) = (1-alpha)*this.q_table(dx_p, dy_p, action+1) + ...
-                    alpha * (reward + this.GAMMA*max(this.q_table(dx,dy,:)));
-            end
+            %             done = tmp(7);
+            %             if(done)
+            %                 this.q_table(dx_p, dy_p, action+1) = reward;
+            %             else
+            this.q_table(dx_p, dy_p, action+1) = (1-alpha)*this.q_table(dx_p, dy_p, action+1) + ...
+                alpha * (reward + this.GAMMA*max(this.q_table(dx,dy,:)));
+            %             end
         end
     end
 end
