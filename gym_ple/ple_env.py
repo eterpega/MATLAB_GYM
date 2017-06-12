@@ -15,6 +15,11 @@ class PLEEnv(gym.Env):
         self.game = game
         self.game_state = PLE(game, fps=30, display_screen=display_screen)
         self.game_state.init()
+
+        # increase gap for checking
+        #self.game.pipe_gap = 115
+        #self.game.player.height = 14
+
         self._action_set = self.game_state.getActionSet()
         self.action_space = spaces.Discrete(len(self._action_set))
         self.screen_width, self.screen_height = self.game_state.getScreenDims()
