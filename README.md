@@ -5,6 +5,7 @@ The program is designed for MATLAB hack day. It tries to bridge Matlab to OpenAI
 ## Software requirement: <br />
 
 Visualization: require python3, [gym](https://github.com/openai/gym), pygame, and [gym-ple](https://github.com/lusob/gym-ple) <br />
+- The flappy bird in gym-ple has a bug that incorrectly implement the hit condition. To use the correct version, go to "PyGame-Learning-Environment" folder in this repo, and type "pip install -e ."
 Control: developed in Matlab 2017a and linux environment <br />
 
 ## To run the code: <br />
