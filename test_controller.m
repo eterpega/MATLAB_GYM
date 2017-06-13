@@ -9,5 +9,5 @@ flappy_bird.initialize();
 
 % % Q-learning
 q_learner = ControllerFactory('rl');
-flappy_bird.train_controller(q_learner);
-%flappy_bird.run_controller(q_learner);
+%flappy_bird.train_controller(q_learner);
+flappy_bird.run_controller(q_learner);
