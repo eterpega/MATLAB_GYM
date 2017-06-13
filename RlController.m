@@ -4,11 +4,11 @@ classdef RlController < handle
         MODEL_TYPE = 'rl';
         ALPHA = 0.7;                % Learning Rate
         GAMMA = 1;                  % Discount Factor
-        EPSILON = 0.07;         	% Exploration Rate
+        EPSILON = 0.025;         	% Exploration Rate
         WIDTH = 288;                % Screen Width
         HEIGHT = 512;               % Screen Height
-        SUPERVISE_ITER = 50;        % Every 50 iteration, Run Supervisor Mode
-        BATCH_SIZE = 32;            % Training Batch Size
+        SUPERVISE_ITER = 5;         % Every 5 iteration, Run Supervisor Mode
+        BATCH_SIZE = 128;            % Training Batch Size
         MAX_VELO = 50;              % Not used at this moment
         MAX_MEMORY = 100000;        % Maximum Replay Memory
         MAX_SUPERVISE_ITER = 1;     % After X iterations, no supervisors
@@ -16,7 +16,7 @@ classdef RlController < handle
     
     properties
         % random sample previous actions for training
-        replay_memory = zeros(100000, 7);
+        replay_memory = zeros(10000, 7);
         idx_pt = 1;
     end
     
@@ -30,7 +30,7 @@ classdef RlController < handle
     methods
         function [this] = RlController()
             this.supervisor = SimpleController();
-            this.q_table = zeros(this.WIDTH, this.HEIGHT*2, 2);
+            this.q_table = zeros(this.WIDTH, 2*this.HEIGHT, 2);
         end
         
         function [action] = get_action(this, obs)
@@ -49,11 +49,11 @@ classdef RlController < handle
             [dx, dy] = this.get_state(obs);
             a0 = this.q_table(dx,dy,1);
             a1 = this.q_table(dx,dy,2);
-            if(a0==a1)
-                action = (rand()>0.5);
-            elseif(a0>a1)
+            action = randi(2)-1;
+            if(a0>a1)
                 action = 0;
-            else
+            end
+            if(a1>a0)
                 action = 1;
             end
         end
@@ -62,24 +62,24 @@ classdef RlController < handle
             rnum = rand();
             % exponential decaying exploration
             epsilon = this.EPSILON; % * exp(-(this.cur_iter-this.SUPERVISE_ITER)/200);
-            if(this.cur_iter<this.MAX_SUPERVISE_ITER)
-                if(~mod(this.cur_iter,this.SUPERVISE_ITER)==0)
-                    if(rnum>epsilon)
-                        action = this.get_action(obs);
-                    else
-                        action = (rnum>0.5);
-                    end
-                else
-                    action = this.supervisor.get_action(obs);
-                end
-            else
-                % exploration + exploitation
+            %             if(this.cur_iter<this.MAX_SUPERVISE_ITER)
+            if(~mod(this.cur_iter,this.SUPERVISE_ITER)==0)
                 if(rnum>epsilon)
                     action = this.get_action(obs);
                 else
-                    action = (rnum>0.5);
+                    action = randi(2)-1;
                 end
+            else
+                action = this.supervisor.get_action(obs);
             end
+            %             else
+            %                 % exploration + exploitation
+            %                 if(rnum>epsilon)
+            %                     action = this.get_action(obs);
+            %                 else
+            %                     action = (rnum>0.5);
+            %                 end
+            %             end
         end
         
         function [] = train(this, action, prev_ob, reward, ob, done)
@@ -120,16 +120,17 @@ classdef RlController < handle
     
     methods (Access = private)
         function [dx, dy] = get_state(this, obs)
-            yc1 = (obs(4) + obs(6))/2;
+            %             yc1 = (obs(4) + obs(6))/2;
             y = obs(8);
             dx = round(obs(5));
-            velo = obs(7);
-            dy = round(this.HEIGHT/2 - (y-yc1-velo));
+            %             velo = obs(7);
+            dy = round(this.HEIGHT - (y-obs(4)));
             dy = max(dy, 1);
             dx = max(dx, 1);
         end
         
         function [] = add_to_memory(this, dx_p, dy_p, dx, dy, action, reward, done)
+            %             if(reward~=0)
             if(this.idx_pt<this.MAX_MEMORY)
                 this.replay_memory(this.idx_pt,:) = [dx_p, dy_p, dx, dy, action, reward, done];
                 this.idx_pt = this.idx_pt + 1;
@@ -137,6 +138,7 @@ classdef RlController < handle
                 idx = randi(this.MAX_MEMORY,1);
                 this.replay_memory(idx,:) = [dx_p, dy_p, dx, dy, action, reward, done];
             end
+            %             end
         end
         
         function [] = experience_replay(this, idx, alpha)
@@ -147,8 +149,10 @@ classdef RlController < handle
             dy = tmp(4);
             action = tmp(5);
             reward = tmp(6);
-            %             done = tmp(7);
-            %             if(done)
+            done = tmp(7);
+%             if(done)
+%                 disp(action);
+%             end
             %                 this.q_table(dx_p, dy_p, action+1) = reward;
             %             else
             this.q_table(dx_p, dy_p, action+1) = (1-alpha)*this.q_table(dx_p, dy_p, action+1) + ...

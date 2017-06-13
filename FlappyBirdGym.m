@@ -4,7 +4,7 @@ classdef FlappyBirdGym < handle
         GAME = 'FlappyBird-v0';
         OUTDIR = '/tmp/random-matlab-agent-results';
         IS_RENDER = true;
-        MAX_STEPS = 1000;
+        MAX_STEPS = 250;
         MAX_EPISODE = 100000;
     end
     
@@ -58,6 +58,10 @@ classdef FlappyBirdGym < handle
                 end
                 j = j + 1;
             end
+            
+            if(~done)
+                this.client.env_monitor_close(this.instance_id);
+            end
         end
         
         function [] = train_controller(this, Controller)
@@ -91,8 +95,8 @@ classdef FlappyBirdGym < handle
                     this.client.env_monitor_close(this.instance_id);
                 end
                 
-                fprintf('saving model at iteration: %d', Controller.cur_iter);
-                Controller.cur_iter = Controller.cur_iter + 1; 
+                fprintf('saving model at iteration: %d \n', Controller.cur_iter);
+                Controller.cur_iter = Controller.cur_iter + 1;
                 Controller.save_model();
             end
         end
