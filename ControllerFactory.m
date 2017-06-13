@@ -1,5 +1,5 @@
 function [controller] = ControllerFactory(type)
-model_name = fullfile('model', [type, 'mat']);
+model_name = fullfile('model', [type, '.mat']);
 switch type
     case 'simple'
         controller = SimpleController();

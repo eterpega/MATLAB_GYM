@@ -11,4 +11,3 @@ flappy_bird.initialize();
 q_learner = ControllerFactory('rl');
 flappy_bird.train_controller(q_learner);
 %flappy_bird.run_controller(q_learner);
-q_learner.save_model()

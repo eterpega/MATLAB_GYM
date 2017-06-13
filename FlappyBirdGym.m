@@ -4,7 +4,7 @@ classdef FlappyBirdGym < handle
         GAME = 'FlappyBird-v0';
         OUTDIR = '/tmp/random-matlab-agent-results';
         IS_RENDER = true;
-        MAX_STEPS = 250;
+        MAX_STEPS = 2000;
         MAX_EPISODE = 100000;
     end
     
@@ -33,34 +33,36 @@ classdef FlappyBirdGym < handle
         end
         
         function [] = run_controller(this, Controller)
-            fprintf('Run controller \n');
-            this.TotalReward = 0;
-            obs = this.client.env_reset(this.instance_id);
-            ob = nan;
-            j = 1;
-            while(j < this.MAX_STEPS)
-                if(~isnan(ob))
-                    action = Controller.get_action(ob);
-                else
-                    action = Controller.get_action(obs);
+            for i = 1:10
+                fprintf('Run controller \n');
+                this.TotalReward = 0;
+                obs = this.client.env_reset(this.instance_id);
+                ob = nan;
+                j = 1;
+                while(j < this.MAX_STEPS)
+                    if(~isnan(ob))
+                        action = Controller.get_action(ob);
+                    else
+                        action = Controller.get_action(obs);
+                    end
+                    [ob, reward, done, info] = this.client.env_step(this.instance_id,...
+                        action, this.IS_RENDER);
+
+                    % in case the image is needed for Q-learning
+                    %tmp_data = load('tmp.mat');
+                    %ob_img = tmp_data.obs_img;
+
+                    this.TotalReward = this.TotalReward + reward;
+                    if(done)
+                        fprintf('Game over, Total Reward: %d \n', this.TotalReward);
+                        break;
+                    end
+                    j = j + 1;
                 end
-                [ob, reward, done, info] = this.client.env_step(this.instance_id,...
-                    action, this.IS_RENDER);
-                
-                % in case the image is needed for Q-learning
-                %tmp_data = load('tmp.mat');
-                %ob_img = tmp_data.obs_img;
-                
-                this.TotalReward = this.TotalReward + reward;
-                if(done)
-                    fprintf('Game over, Total Reward: %d \n', this.TotalReward);
-                    break;
+
+                if(~done)
+                    this.client.env_monitor_close(this.instance_id);
                 end
-                j = j + 1;
-            end
-            
-            if(~done)
-                this.client.env_monitor_close(this.instance_id);
             end
         end
         
@@ -93,6 +95,7 @@ classdef FlappyBirdGym < handle
                 
                 if(~done)
                     this.client.env_monitor_close(this.instance_id);
+                    fprintf('Not ended, Total Reward: %f \n', this.TotalReward);
                 end
                 
                 fprintf('saving model at iteration: %d \n', Controller.cur_iter);
