@@ -33,6 +33,9 @@ classdef FlappyBirdGym < handle
         end
         
         function [] = run_controller(this, Controller)
+            outputVideo = VideoWriter(sprintf('%s.avi',Controller.TYPE));
+            outputVideo.FrameRate = 30;
+            open(outputVideo);
             for i = 1:10
                 fprintf('Run controller \n');
                 this.TotalReward = 0;
@@ -49,8 +52,9 @@ classdef FlappyBirdGym < handle
                         action, this.IS_RENDER);
 
                     % in case the image is needed for Q-learning
-                    %tmp_data = load('tmp.mat');
-                    %ob_img = tmp_data.obs_img;
+                    tmp_data = load('tmp.mat');
+                    ob_img = tmp_data.obs_img;
+                    writeVideo(outputVideo,ob_img);
 
                     this.TotalReward = this.TotalReward + reward;
                     if(done)

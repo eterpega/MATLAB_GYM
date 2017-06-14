@@ -1,5 +1,6 @@
 classdef SimpleController < handle
     properties (Constant)
+        TYPE = 'classic';
         HALF_HEIGHT = 512/2;
     end
     

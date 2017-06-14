@@ -1,7 +1,7 @@
-classdef RlController < handle
+classdef DeepRlController < handle
     % TO DO: investigate algorithm convergence and tune hyper-parameters
     properties (Constant)
-        MODEL_TYPE = 'rl';
+        MODEL_TYPE = 'drl';
         ALPHA = 0.7;                % Learning Rate
         GAMMA = 1;                  % Discount Factor
         EPSILON = 0.025;         	% Exploration Rate
@@ -22,15 +22,16 @@ classdef RlController < handle
     
     properties
         % screen width, screen height, 2 action
-        q_table
+        q_layer
+        q_network
         cur_iter = 0;
         supervisor
     end
     
     methods
-        function [this] = RlController()
+        function [this] = DeepRlController()
             this.supervisor = SimpleController();
-            this.q_table = zeros(30, 2*30, 20, 2);
+            this.q_layer = zeros(30, 2*30, 20, 2);
         end
         
         function [action] = get_action(this, obs)
