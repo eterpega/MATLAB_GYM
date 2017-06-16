@@ -4,7 +4,7 @@ classdef FlappyBirdGym < handle
         GAME = 'FlappyBird-v0';
         OUTDIR = '/tmp/random-matlab-agent-results';
         IS_RENDER = true;
-        MAX_STEPS = 2000;
+        MAX_STEPS = 1000;
         MAX_EPISODE = 100000;
     end
     
@@ -40,22 +40,19 @@ classdef FlappyBirdGym < handle
                 fprintf('Run controller \n');
                 this.TotalReward = 0;
                 obs = this.client.env_reset(this.instance_id);
+                action = Controller.get_action(obs);
                 ob = nan;
                 j = 1;
                 while(j < this.MAX_STEPS)
-                    if(~isnan(ob))
-                        action = Controller.get_action(ob);
-                    else
-                        action = Controller.get_action(obs);
-                    end
+                    
                     [ob, reward, done, info] = this.client.env_step(this.instance_id,...
                         action, this.IS_RENDER);
-
+                    action = Controller.get_action(ob);
                     % in case the image is needed for Q-learning
                     tmp_data = load('tmp.mat');
                     ob_img = tmp_data.obs_img;
                     writeVideo(outputVideo,ob_img);
-
+                    
                     this.TotalReward = this.TotalReward + reward;
                     if(done)
                         fprintf('Game over, Total Reward: %d \n', this.TotalReward);
@@ -63,7 +60,7 @@ classdef FlappyBirdGym < handle
                     end
                     j = j + 1;
                 end
-
+                
                 if(~done)
                     this.client.env_monitor_close(this.instance_id);
                 end

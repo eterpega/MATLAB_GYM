@@ -2,35 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9b133e7c-262e-46f3-80ab-61a1dc7ff3ef" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/PyGame-Learning-Environment/gym-ple/README.rst" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/PyGame-Learning-Environment/gym-ple/gym_ple.egg-info/PKG-INFO" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/PyGame-Learning-Environment/gym-ple/gym_ple.egg-info/SOURCES.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/PyGame-Learning-Environment/gym-ple/gym_ple.egg-info/dependency_links.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/PyGame-Learning-Environment/gym-ple/gym_ple.egg-info/not-zip-safe" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/PyGame-Learning-Environment/gym-ple/gym_ple.egg-info/top_level.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/PyGame-Learning-Environment/gym-ple/gym_ple/__init__.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/PyGame-Learning-Environment/gym-ple/gym_ple/example.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/PyGame-Learning-Environment/gym-ple/gym_ple/ple_env.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/PyGame-Learning-Environment/gym-ple/gym_ple/random-agent-results/openaigym.episode_batch.0.22521.stats.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/PyGame-Learning-Environment/gym-ple/gym_ple/random-agent-results/openaigym.manifest.0.22521.manifest.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/PyGame-Learning-Environment/gym-ple/gym_ple/random-agent-results/openaigym.video.0.22521.video000000.meta.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/PyGame-Learning-Environment/gym-ple/gym_ple/random-agent-results/openaigym.video.0.22521.video000000.mp4" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/PyGame-Learning-Environment/gym-ple/gym_ple/random-agent-results/openaigym.video.0.22521.video000001.meta.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/PyGame-Learning-Environment/gym-ple/gym_ple/random-agent-results/openaigym.video.0.22521.video000001.mp4" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/PyGame-Learning-Environment/gym-ple/gym_ple/random-agent-results/openaigym.video.0.22521.video000008.meta.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/PyGame-Learning-Environment/gym-ple/gym_ple/random-agent-results/openaigym.video.0.22521.video000008.mp4" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/PyGame-Learning-Environment/gym-ple/gym_ple/random-agent-results/openaigym.video.0.22521.video000027.meta.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/PyGame-Learning-Environment/gym-ple/gym_ple/random-agent-results/openaigym.video.0.22521.video000027.mp4" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/PyGame-Learning-Environment/gym-ple/gym_ple/random-agent-results/openaigym.video.0.22521.video000064.meta.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/PyGame-Learning-Environment/gym-ple/gym_ple/random-agent-results/openaigym.video.0.22521.video000064.mp4" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/PyGame-Learning-Environment/gym-ple/setup.py" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/model/rl.mat" afterPath="$PROJECT_DIR$/model/rl.mat" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tmp.mat" afterPath="$PROJECT_DIR$/tmp.mat" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/DeepRlController.m" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/FlappyBirdGym.m" afterPath="$PROJECT_DIR$/FlappyBirdGym.m" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/PyGame-Learning-Environment/ple/games/flappybird/__init__.py" afterPath="$PROJECT_DIR$/PyGame-Learning-Environment/ple/games/flappybird/__init__.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/RlController.m" afterPath="$PROJECT_DIR$/RlController.m" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SimpleController.m" afterPath="$PROJECT_DIR$/SimpleController.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test_controller.m" afterPath="$PROJECT_DIR$/test_controller.m" />
     </list>
     <ignored path="HackDay.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -50,11 +25,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="gym_http_server.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="gym_http_server.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/gym_http_server.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1290">
-              <caret line="86" column="62" selection-start-line="86" selection-start-column="62" selection-end-line="86" selection-end-column="62" />
+            <state relative-caret-position="299">
+              <caret line="57" column="90" selection-start-line="57" selection-start-column="87" selection-end-line="57" selection-end-column="90" />
               <folding />
             </state>
           </provider>
@@ -72,7 +47,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="__init__.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="__init__.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/PyGame-Learning-Environment/ple/games/flappybird/__init__.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="327">
@@ -151,6 +126,7 @@
     </navigator>
     <panes>
       <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -265,7 +241,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -764,14 +739,6 @@
       </provider>
     </entry>
     <entry file="file://$USER_HOME$/PyGame-Learning-Environment/ple/games/base/pygamewrapper.py" />
-    <entry file="file://$PROJECT_DIR$/gym_http_server.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1290">
-          <caret line="86" column="62" selection-start-line="86" selection-start-column="62" selection-end-line="86" selection-end-column="62" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/PyGame-Learning-Environment/ple/games/flappybird/__init__.py" />
     <entry file="file://$USER_HOME$/PyGame-Learning-Environment/ple/__init__.py" />
     <entry file="file://$USER_HOME$/PyGame-Learning-Environment/ple/ple.py" />
@@ -800,6 +767,14 @@
           <folding>
             <element signature="e#0#9#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gym_http_server.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="299">
+          <caret line="57" column="90" selection-start-line="57" selection-start-column="87" selection-end-line="57" selection-end-column="90" />
+          <folding />
         </state>
       </provider>
     </entry>

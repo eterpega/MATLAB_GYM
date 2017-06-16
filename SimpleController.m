@@ -28,11 +28,7 @@ classdef SimpleController < handle
             dx = obs(5);
             y = obs(8);
             velo = obs(7);
-%             if(dx<=1)
-%                 action = (y-yc2-velo)<0;
-%             else
-                action = (y-yc1-velo)<0;
-%             end
+            action = (y-yc1-velo)<0;
         end
         
         function [action] = sample_action(this, obs)

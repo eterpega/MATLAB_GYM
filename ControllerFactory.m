@@ -5,6 +5,8 @@ switch type
         controller = SimpleController();
     case 'rl'
         controller = RlController();
+    case 'deep'
+        controller = DeepController();
     otherwise
         error('Controller not defined');
 end
