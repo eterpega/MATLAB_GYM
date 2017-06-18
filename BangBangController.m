@@ -1,15 +1,15 @@
-classdef SimpleController < handle
+classdef BangBangController < AbstractController
     properties (Constant)
         TYPE = 'classic';
-        HALF_HEIGHT = 512/2;
     end
     
     methods
-        function [this] = SimpleController()
+        function [this] = BangBangController()
+            
         end
         
-        function [action] = get_action(this, obs)
-            % TO DO: Based on state space, design bang-bang controller
+        function [action] = getAction(this, obs)
+            % bang-bang controller for flappy bird
             % action=1, going down; action=0, going up
             %  observation ordering
             %   [next_next_pipe_bottom_y, \
@@ -23,16 +23,18 @@ classdef SimpleController < handle
             
             % define a bang-bang controller
             yc1 = (obs(4) + obs(6))/2;
-            yc2 = (obs(1) + obs(3))/2;
-            dx2 = obs(2);
-            dx = obs(5);
             y = obs(8);
             velo = obs(7);
             action = (y-yc1-velo)<0;
         end
         
-        function [action] = sample_action(this, obs)
+        %---- not used since the controller does not need training ------
+        function [action] = sampleAction(this, obs)
+
         end
         
+        function [] = updateOneIter(varargin)
+        end
+        %-----------------------------------------------------------------
     end
 end

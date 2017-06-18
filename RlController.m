@@ -1,4 +1,4 @@
-classdef RlController < handle
+classdef RlController < AbstractController
     % TO DO: investigate algorithm convergence and tune hyper-parameters
     properties (Constant)
         TYPE = 'rl';
@@ -24,16 +24,14 @@ classdef RlController < handle
         % screen width, screen height, 2 action
         q_table
         cur_iter = 0;
-        supervisor
     end
     
     methods
         function [this] = RlController()
-            this.supervisor = SimpleController();
             this.q_table = zeros(30, 2*30, 20, 2);
         end
         
-        function [action] = get_action(this, obs)
+        function [action] = getAction(this, obs)
             % action=1, going up; action=0, going down
             %  observation ordering
             %   [next_next_pipe_bottom_y, \
@@ -58,7 +56,7 @@ classdef RlController < handle
             end
         end
         
-        function [action] = sample_action(this, obs)
+        function [action] = sampleAction(this, obs)
             rnum = rand();
             epsilon = this.EPSILON; 
             if(rnum>epsilon)
@@ -68,7 +66,7 @@ classdef RlController < handle
             end
         end
         
-        function [] = train(this, action, prev_ob, reward, ob, done)
+        function [] = updateOneIter(this, action, prev_ob, reward, ob, done, info)
             if(~isnan(prev_ob))
                 alpha = this.ALPHA;
                 [dx_p, dy_p, velo_p] = this.get_state(prev_ob);
@@ -87,12 +85,12 @@ classdef RlController < handle
             end
         end
         
-        function [] = save_model(this)
+        function [] = saveModel(this)
             qTable = this.q_table;
             save(fullfile('model',[this.MODEL_TYPE, '.mat']), 'qTable');
         end
         
-        function [] = load_model(this, data_file)
+        function [] = loadModel(this, data_file)
             load(data_file, 'qTable');
             this.q_table = qTable;
         end

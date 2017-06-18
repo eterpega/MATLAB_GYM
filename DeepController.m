@@ -1,5 +1,5 @@
-classdef DeepController < handle
-    % only for behavior cloning
+classdef DeepController < AbstractController
+    % only for behavior cloning, not working very well
     properties (Constant)
         MODEL_TYPE = 'deep';
         WIDTH = 288;                % Screen Width
@@ -46,7 +46,7 @@ classdef DeepController < handle
             this.supervisor_type = 'simple';
         end
         
-        function [action] = get_action(this, obs, type)
+        function [action] = getAction(this, obs, type)
             switch this.supervisor_type
                 case 'rl'
                     action = this.supervisor.get_action(obs);
@@ -55,7 +55,7 @@ classdef DeepController < handle
             end
         end
         
-        function [action] = sample_action(this, ob_img)
+        function [action] = sampleAction(this, ob_img)
             %this.q_network
             q = this.q_network.predict(rgb2gray(ob_img));
             a0 = q(1);
@@ -168,12 +168,12 @@ classdef DeepController < handle
             this.q_network = trainNetwork(Xtrain,ytrain,this.q_layer,options);
         end
         
-        function [] = save_model(this)
+        function [] = saveModel(this)
             qNetwork = this.q_network;
             save(fullfile('model',[this.MODEL_TYPE, '.mat']), 'qNetwork');
         end
         
-        function [] = load_model(this, data_file)
+        function [] = loadModel(this, data_file)
             load(data_file, 'qNetwork');
             this.q_network = qNetwork;
         end

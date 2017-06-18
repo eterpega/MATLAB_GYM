@@ -1,8 +1,10 @@
 function [controller] = ControllerFactory(type)
+% Controller Factory to produce different controllers
+
 model_name = fullfile('model', [type, '.mat']);
 switch type
-    case 'simple'
-        controller = SimpleController();
+    case 'bang-bang'
+        controller = BangBangController();
     case 'rl'
         controller = RlController();
     case 'deep'
@@ -12,7 +14,7 @@ switch type
 end
 
 if(exist(model_name, 'file')==2)
-    controller.load_model(model_name);
+    controller.loadModel(model_name);
 end
 
 end

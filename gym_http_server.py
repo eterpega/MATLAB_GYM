@@ -33,6 +33,7 @@ class Envs(object):
     should be manipulated.
     """
     def __init__(self):
+        self.envs_id = {}
         self.envs = {}
         self.id_len = 8
 
@@ -59,6 +60,7 @@ class Envs(object):
 
         instance_id = str(uuid.uuid4().hex)[:self.id_len]
         self.envs[instance_id] = env
+        self.envs_id[instance_id] = env_id
         return instance_id
 
     def list_all(self):
@@ -77,20 +79,24 @@ class Envs(object):
             nice_action = np.array(action)
         if render:
             env.render(mode='human', close=False) #mode='rgb_array', close=False)
-        [obs_img, reward, done, info] = env.step(nice_action)
-        # use scipy for image communication to avoid overhead in jsonable
-        scipy.io.savemat('./tmp.mat', mdict={'obs_img': obs_img})
+        [obs, reward, done, info] = env.step(nice_action)
 
-        # get game state directly
-        observation = env.env.env.game.getGameState()
-        vec = [observation['next_next_pipe_bottom_y'], \
-               observation['next_next_pipe_dist_to_player'], \
-               observation['next_next_pipe_top_y'], \
-               observation['next_pipe_bottom_y'], \
-               observation['next_pipe_dist_to_player'], \
-               observation['next_pipe_top_y'], \
-               observation['player_vel'], \
-               observation['player_y']]
+        if(self.envs_id[instance_id]=='FlappyBird-v0'):
+            # use scipy for image communication to avoid overhead in jsonable
+            scipy.io.savemat('./tmp.mat', mdict={'obs_img': obs})
+
+            # get game state directly
+            observation = env.env.env.game.getGameState()
+            vec = [observation['next_next_pipe_bottom_y'], \
+                   observation['next_next_pipe_dist_to_player'], \
+                   observation['next_next_pipe_top_y'], \
+                   observation['next_pipe_bottom_y'], \
+                   observation['next_pipe_dist_to_player'], \
+                   observation['next_pipe_top_y'], \
+                   observation['player_vel'], \
+                   observation['player_y']]
+        else:
+            vec = obs
         obs_jsonable = env.observation_space.to_jsonable(vec)
         return [obs_jsonable, reward, done, info]
 
