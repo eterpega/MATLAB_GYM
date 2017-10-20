@@ -51,7 +51,11 @@ class Envs(object):
 
     def create(self, env_id, seed=None):
         try:
-            env = gym.make(env_id)
+            if(env_id=='osim'):
+                from osim.env import RunEnv
+                env = RunEnv(visualize=True)
+            else:
+                env = gym.make(env_id)
             print('making environment')
             if seed:
                 env.seed(seed)
